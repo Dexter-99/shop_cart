@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import Navbar from "./Navbar";
 import Item from "../items/Item";
 export class Counter extends Component {
   state = {
@@ -20,6 +21,7 @@ export class Counter extends Component {
   render() {
     return (
       <div>
+        <Navbar value={this.state.i} />
         <button className="btn btn-dark ml-4 mt-4" onClick={this.itemIncrement}>
           Add Item +
         </button>
