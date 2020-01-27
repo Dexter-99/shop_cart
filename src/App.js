@@ -1,66 +1,61 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import "./App.css";
 import Navbar from "./components/layouts/Navbar";
 import Items from "./components/layouts/Items";
 
-export class App extends Component {
-  state = {
-    i: 0,
-    items: []
-  };
+const App = () => {
+  const [i, setId] = useState(0);
+  const [items, setItems] = useState([]);
 
-  itemIncrement = () => {
-    this.setState({ i: this.state.i + 1 });
-    let obj = { id: this.state.i, count: 0 };
-    this.setState({
-      items: [...this.state.items, obj]
-    });
+  const itemIncrement = () => {
+    setId(i + 1);
+    let obj = { id: i, count: 0 };
+    setItems(items => [...items, obj]);
+    console.log(items);
   };
-  handleIncrement = item => {
-    let items = [...this.state.items];
-    let index = items.indexOf(item);
-    items[index] = { ...item };
-    items[index].count++;
-    this.setState({ items });
+  const handleIncrement = item => {
+    let updateItems = [...items];
+    let index = updateItems.indexOf(item);
+    updateItems[index] = { ...item };
+    updateItems[index].count++;
+    setItems(updateItems);
   };
-  handleDecrement = item => {
+  const handleDecrement = item => {
     console.log(item);
-    let items = [...this.state.items];
-    let index = items.indexOf(item);
-    items[index] = { ...item };
-    if (items[index].count !== 0) {
-      items[index].count--;
+    let updateItems = [...items];
+    let index = updateItems.indexOf(item);
+    updateItems[index] = { ...item };
+    if (updateItems[index].count !== 0) {
+      updateItems[index].count--;
     }
-    this.setState({ items });
+    setItems(updateItems);
   };
-  handleDelete = itemId => {
+  const handleDelete = itemId => {
     console.log("handled event");
-    const items = this.state.items.filter(c => c.id !== itemId);
-    this.setState({ items: items });
+    const updateItems = items.filter(c => c.id !== itemId);
+    setItems(updateItems);
   };
-  handleReset = () => {
+  const handleReset = () => {
     console.log("reset");
-    let items = this.state.items.map(item => {
+    let updateItems = items.map(item => {
       item.count = 0;
       return item;
     });
-    this.setState({ items });
+    setItems(updateItems);
   };
-  render() {
-    return (
-      <Fragment className="App">
-        <Navbar value={this.state.items.length} />
-        <Items
-          items={this.state.items}
-          onReset={this.handleReset}
-          onIncrement={this.handleIncrement}
-          onDelete={this.handleDelete}
-          onDecrement={this.handleDecrement}
-          onItemIncrement={this.itemIncrement}
-        />
-      </Fragment>
-    );
-  }
-}
+  return (
+    <Fragment>
+      <Navbar value={items.length} />
+      <Items
+        items={items}
+        onReset={handleReset}
+        onIncrement={handleIncrement}
+        onDelete={handleDelete}
+        onDecrement={handleDecrement}
+        onItemIncrement={itemIncrement}
+      />
+    </Fragment>
+  );
+};
 
 export default App;
